@@ -1,0 +1,29 @@
+name: terraform-site
+on:
+  workflow_dispatch:
+
+jobs:
+  plan-apply:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: infra/site-setup
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: infra/site-setup
+        run: terraform plan -input=false
+
+      - name: Terraform Apply
+        working-directory: infra/site-setup
+        run: terraform apply -auto-approve -input=false
