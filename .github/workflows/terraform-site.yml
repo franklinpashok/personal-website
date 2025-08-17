@@ -1,29 +1,39 @@
-name: terraform-site
-on:
-  workflow_dispatch:
+  name: terraform-site
+  on:
+    workflow_dispatch:
 
-jobs:
-  plan-apply:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+  jobs:
+    plan-apply:
+      runs-on: ubuntu-latest
+      permissions:
+        id-token: write
+        contents: read
 
-    env:
-      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
+      env:
+        TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
+      steps:
+        - uses: actions/checkout@v4
+        - uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Init
-        working-directory: infra/site-setup
-        run: terraform init
+        - name: Configure AWS creds (OIDC)
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-region: ${{ env.AWS_REGION }}
+            role-to-assume: ${{ secrets.GHA_ROLE_ARN }}   # store your role ARN as a repo secret
+            role-session-name: gha-terraform
 
-      - name: Terraform Plan
-        working-directory: infra/site-setup
-        run: terraform plan -input=false
+        - name: Who am I?
+          run: aws sts get-caller-identity
 
-      - name: Terraform Apply
-        working-directory: infra/site-setup
-        run: terraform apply -auto-approve -input=false
+        - name: Terraform Init
+          working-directory: infra/site-setup
+          run: terraform init
+
+        - name: Terraform Plan
+          working-directory: infra/site-setup
+          run: terraform plan -input=false
+
+        # - name: Terraform Apply
+        #   working-directory: infra/site-setup
+        #   run: terraform apply -auto-approve -input=false
