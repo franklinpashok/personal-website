@@ -1,12 +1,12 @@
-terraform { 
-  cloud { 
-    
-    organization = "franklin-org" 
+terraform {
+  cloud {
 
-    workspaces { 
-      name = "mini-site" 
-    } 
-  } 
+    organization = "franklin-org"
+
+    workspaces {
+      name = "mini-site"
+    }
+  }
 }
 
 provider "aws" {
