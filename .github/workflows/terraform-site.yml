@@ -1,16 +1,24 @@
   name: terraform-site
   on:
-    workflow_dispatch:
+    workflow_dispatch: {}
+    pull_request:
+      branches: [ main ]
+    push:
+      branches: [ main ]
+
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
+      AWS_REGION: ${{ env.AWS_REGION }}
+
+    permissions:
+      id-token: write
+      contents: read
+
 
   jobs:
-    plan-apply:
+    plan:
+      if: github.event_name == 'pull_request'
       runs-on: ubuntu-latest
-      permissions:
-        id-token: write
-        contents: read
-
-      env:
-        TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
 
       steps:
         - uses: actions/checkout@v4
@@ -21,7 +29,7 @@
           with:
             aws-region: ${{ env.AWS_REGION }}
             role-to-assume: ${{ secrets.GHA_ROLE_ARN }}   # store your role ARN as a repo secret
-            role-session-name: gha-terraform
+            role-session-name: gha-plan
 
         - name: Who am I?
           run: aws sts get-caller-identity
@@ -34,6 +42,32 @@
           working-directory: infra/site-setup
           run: terraform plan -input=false
 
-        # - name: Terraform Apply
-        #   working-directory: infra/site-setup
-        #   run: terraform apply -auto-approve -input=false
+    plan-appy:
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v4
+        - uses: hashicorp/setup-terraform@v3
+
+        - name: Configure AWS creds (OIDC)
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-region: ${{ env.AWS_REGION }}
+            role-to-assume: ${{ secrets.GHA_ROLE_ARN }}   # store your role ARN as a repo secret
+            role-session-name: gha-plan
+
+        - name: Who am I?
+          run: aws sts get-caller-identity
+
+        - name: Terraform Init
+          working-directory: infra/site-setup
+          run: terraform init
+
+        - name: Terraform Plan
+          working-directory: infra/site-setup
+          run: terraform plan -input=false
+
+        - name: Terraform Apply
+          working-directory: infra/site-setup
+          run: terraform apply -auto-approve -input=false
