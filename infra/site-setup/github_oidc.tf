@@ -10,6 +10,7 @@ module "github_oidc_provider" {
             github_environments = []
             role_name           = null
             role_path           = var.role_path
+            role_permissions_boundary = module.github_oidc_provider.gh_action_iam_role_permission_boundary.arn
             }
     }
 }
