@@ -5,8 +5,15 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
     actions = [
       "s3:*",
       "cloudfront:*",
-      "ecr:*",
+      "route53:*",
+      "wafv2:*",
+      "apigateway:*",
       "lambda:*",
+      "logs:*",
+      "events:*",
+      "acm:*",
+      "cloudwatch:*",
+      "ecr:*"
     ]
 
     resources = ["*"]
@@ -20,38 +27,11 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
 
     resources = ["*"]
   }
-#   statement {
-#     sid = "ReadWrite"
+}
 
-#     actions = [
-#       "ecr:BatchGetImage",
-#       "ecr:BatchCheckLayerAvailability",
-#       "ecr:GetRepositoryPolicy",
-#       "ecr:DescribeRepositories",
-#       "ecr:DescribeImages",
-#       "ecr:InitiateLayerUpload",
-#       "ecr:UploadLayerPart",
-#       "ecr:CompleteLayerUpload",
-#       "ecr:PutImage",
-#     ]
-#     resources = ["arn:aws:ecr:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/${var.aws_app_name}/*"]
-
-#     condition {
-#       test     = "StringEquals"
-#       variable = "aws:ResourceTag/allow-gh-action"
-
-#       values = ["true"]
-#     }
-#  }
-#   statement {
-#     sid = "Frontendcloudfront"
-
-#     actions = [
-#       "cloudfront:*",
-#     ]
-
-#     resources = [var.cloudfront_arn]
-#   }
+resource "aws_iam_policy" "gha_permissions_boundary" {
+  name   = "gha-permissions-boundary"
+  policy = data.aws_iam_policy_document.mini-site_policy_statement.json
 }
 
 resource "aws_iam_role_policy" "mini_site_policy" {
