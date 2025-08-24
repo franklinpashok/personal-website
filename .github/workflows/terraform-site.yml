@@ -8,7 +8,7 @@
 
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
-      AWS_REGION: ${{ env.AWS_REGION }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
 
     permissions:
       id-token: write
