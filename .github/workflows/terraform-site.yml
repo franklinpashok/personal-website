@@ -1,72 +1,79 @@
-  name: terraform-site
-  on:
-    workflow_dispatch: {}
-    pull_request:
-      branches: [ main ]
-    push:
-      branches: [ main ]
+name: terraform-site
 
-    permissions:
-      id-token: write
-      contents: read
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main ]   # plan on any PR targeting main
+  push:
+    branches: [ main ]   # plan+apply only on main
 
-    env:
-      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
-      AWS_REGION: ${{ vars.AWS_REGION }}
+permissions:
+  id-token: write
+  contents: read
 
-    jobs:
-      plan:
-        if: github.event_name == 'pull_request'
-        runs-on: ubuntu-latest
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}                 # set in Settings → Actions → Variables
+  TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}# set in Settings → Actions → Secrets
 
-        steps:
-          - uses: actions/checkout@v4
-          - uses: hashicorp/setup-terraform@v3
+concurrency:
+  group: tf-state
+  cancel-in-progress: false
 
-          - name: Configure AWS creds (OIDC)
-            uses: aws-actions/configure-aws-credentials@v4
-            with:
-              aws-region: ${{ env.AWS_REGION }}
-              role-to-assume: ${{ secrets.GHA_ROLE_ARN }}   # store your role ARN as a repo secret
-              role-session-name: gha-plan
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
 
-          - name: Who am I?
-            run: aws sts get-caller-identity
+      - name: Configure AWS creds (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_ROLE_ARN }}
+          role-session-name: gha-plan
 
-          - name: Terraform Init
-            working-directory: infra/site-setup
-            run: terraform init
+      - name: Smoke (whoami + list S3)
+        run: |
+          aws sts get-caller-identity
+          aws s3 ls
 
-          - name: Terraform Plan
-            working-directory: infra/site-setup
-            run: terraform plan -input=false
+      - name: Terraform Init
+        working-directory: infra/site-setup
+        run: terraform init -reconfigure
 
-      plan-appy:
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        runs-on: ubuntu-latest
+      - name: Terraform Plan
+        working-directory: infra/site-setup
+        run: terraform plan -input=false
 
-        steps:
-          - uses: actions/checkout@v4
-          - uses: hashicorp/setup-terraform@v3
+  plan-apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
 
-          - name: Configure AWS creds (OIDC)
-            uses: aws-actions/configure-aws-credentials@v4
-            with:
-              aws-region: ${{ env.AWS_REGION }}
-              role-to-assume: ${{ secrets.GHA_ROLE_ARN }}   # store your role ARN as a repo secret
-              role-session-name: gha-plan
+      - name: Configure AWS creds (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_ROLE_ARN }}
+          role-session-name: gha-apply
 
-          - name: Who am I?
-            run: aws sts get-caller-identity
+      - name: Smoke (whoami + list S3)
+        run: |
+          aws sts get-caller-identity
+          aws s3 ls
 
-          - name: Terraform Init
-            working-directory: infra/site-setup
-            run: terraform init
+      - name: Terraform Init
+        working-directory: infra/site-setup
+        run: terraform init -reconfigure
 
-          - name: Terraform Plan
-            working-directory: infra/site-setup
-            run: terraform plan -input=false
+      - name: Terraform Plan
+        working-directory: infra/site-setup
+        run: terraform plan -input=false
 
-          - name: Terraform Apply
-            working-directory: infra/site-setup
-            run: terraform apply -auto-approve -input=false
+      - name: Terraform Apply
+        working-directory: infra/site-setup
+        run: terraform apply -auto-approve -input=false
