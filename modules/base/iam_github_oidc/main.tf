@@ -14,7 +14,7 @@ module "github_actions_repo" {
   role_name                   = each.value.role_name
   role_path                   = each.value.role_path
   role_permissions_boundary   = each.value.role_permissions_boundary
-  default_conditions          = ["allow_environment", "allow_main", ]
+  default_conditions          = ["allow_environment", "allow_main"]
   github_environments         = each.value.github_environments
   
 

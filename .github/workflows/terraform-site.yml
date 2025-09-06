@@ -1,7 +1,6 @@
 name: terraform-site
 
 on:
-  workflow_dispatch: {}
   pull_request:
     branches: [ main ]   # plan on any PR targeting main
   push:
@@ -21,6 +20,9 @@ concurrency:
 
 jobs:
   plan:
+    permissions:
+      id-token: write
+      contents: read
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
