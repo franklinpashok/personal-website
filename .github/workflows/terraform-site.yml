@@ -56,7 +56,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra/site-setup
-        run: terraform init -reconfigure
+        run: terraform init
 
       - name: Terraform Plan
         working-directory: infra/site-setup
@@ -83,7 +83,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra/site-setup
-        run: terraform init -reconfigure
+        run: terraform init
 
       - name: Terraform Plan
         working-directory: infra/site-setup

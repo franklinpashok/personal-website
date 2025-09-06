@@ -22,7 +22,7 @@ module "github_actions_repo" {
     {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [for branch in each.value.github_branches : "repo:${each.value.github_repo}:ref:refs/heads/${branch}"]
+      values   = concat([for branch in each.value.github_branches : "repo:${each.value.github_repo}:ref:refs/heads/${branch}"], ["repo:${each.value.github_repo}:pull_request"])
     },
   ] : []
 }
