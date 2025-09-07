@@ -8,3 +8,9 @@ variable "role_path" {
   type        = string
   default     = "/github-actions/"
 }
+
+variable "test" {
+  description = "testing"
+  type        = string
+  default     = ""
+}

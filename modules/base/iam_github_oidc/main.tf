@@ -14,7 +14,7 @@ module "github_actions_repo" {
   role_name                   = each.value.role_name
   role_path                   = each.value.role_path
   role_permissions_boundary   = each.value.role_permissions_boundary
-  default_conditions          = ["allow_environment", "allow_main", ]
+  default_conditions          = ["allow_environment", "allow_main"]
   github_environments         = each.value.github_environments
   
 
@@ -22,7 +22,7 @@ module "github_actions_repo" {
     {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [for branch in each.value.github_branches : "repo:${each.value.github_repo}:ref:refs/heads/${branch}"]
+      values   = concat([for branch in each.value.github_branches : "repo:${each.value.github_repo}:ref:refs/heads/${branch}"], ["repo:${each.value.github_repo}:pull_request"])
     },
   ] : []
 }

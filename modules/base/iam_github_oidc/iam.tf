@@ -27,6 +27,23 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
 
     resources = ["*"]
   }
+  statement {
+    sid = "IAMpermissionsforplanandapply"
+
+    actions = [
+        "iam:GetRole",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:ListPolicies",
+        "iam:ListOpenIDConnectProviders",
+        "iam:GetOpenIDConnectProvider",
+        "iam:GetRolePolicy"
+    ]
+
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "gha_permissions_boundary" {
