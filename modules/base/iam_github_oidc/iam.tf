@@ -38,7 +38,8 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
         "iam:GetPolicyVersion",
         "iam:ListPolicies",
         "iam:ListOpenIDConnectProviders",
-        "iam:GetOpenIDConnectProvider"
+        "iam:GetOpenIDConnectProvider",
+        "iam:GetRolePolicy"
     ]
 
     resources = ["*"]
