@@ -12,7 +12,7 @@ permissions:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}                 # set in Settings → Actions → Variables
-  TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}# set in Settings → Actions → Secrets
+  TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }} # set in Settings → Actions → Secrets
 
 concurrency:
   group: tf-state
