@@ -28,7 +28,7 @@ module "personal_website" {
       domain              = var.acm_domain_name
       create_acm_record   = false
       create_alias_record = false
-      include_in_acm      = false
+      include_in_acm      = true
     }
   }
 
