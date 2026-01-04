@@ -81,3 +81,19 @@ resource "aws_acm_certificate_validation" "personal_website" {
   certificate_arn         = aws_acm_certificate.personal_website.arn
   validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
 }
+
+# Create the Alias record in Route53
+resource "aws_route53_record" "website_alias" {
+  provider = aws.us-east-1 # Use the provider that has access to Route53
+  
+  zone_id = var.route53_zone_id
+  name    = var.acm_domain_name
+  type    = "A" # IPv4 Alias
+
+  alias {
+    # Reference the outputs from the module
+    name                   = module.personal_website.cloudfront_distribution_domain_name
+    zone_id                = module.personal_website.cloudfront_distribution_hosted_zone_id
+    evaluate_target_health = false
+  }
+}
