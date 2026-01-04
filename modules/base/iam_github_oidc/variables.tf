@@ -6,8 +6,8 @@ variable "github_repos" {
       github_branches     = list(string)
       github_environments = list(string)
       # Custom Role name. It will autocreate based on repo if not provided
-      role_name = string
-      role_path = string
+      role_name                 = string
+      role_path                 = string
       role_permissions_boundary = string
     })
   )
