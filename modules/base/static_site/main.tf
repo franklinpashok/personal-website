@@ -28,9 +28,12 @@ module "personal_website" {
       domain              = var.acm_domain_name
       create_acm_record   = false
       create_alias_record = false
-      include_in_acm      = true
+      include_in_acm      = false
     }
   }
+
+  create_certificate           = false
+  existing_acm_certificate_arn = aws_acm_certificate_validation.personal_website.certificate_arn
 
   providers = {
     aws.us-east-1 = aws.us-east-1
@@ -43,16 +46,24 @@ module "personal_website" {
 
 }
 
-# 1. Create the Validation Record in your Manual Zone
-# We iterate over the validation options output by the inner ACM module.
+# 1. Create Cert
+resource "aws_acm_certificate" "personal_website" {
+  provider          = aws.us-east-1
+  domain_name       = var.acm_domain_name
+  validation_method = "DNS"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# 1. Create the Validation Record in your Manual Zone We iterate over the validation options output by the inner ACM module.
 resource "aws_route53_record" "validation" {
   provider = aws.us-east-1
-  # We loop through the domain validation options provided by the module output
   for_each = {
-    for validation in module.personal_website.acm_certificate_domain_validation_options : validation.domain_name => {
-      name   = validation.resource_record_name
-      record = validation.resource_record_value
-      type   = validation.resource_record_type
+    for dvo in aws_acm_certificate.personal_website.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
     }
   }
 
@@ -64,14 +75,9 @@ resource "aws_route53_record" "validation" {
   zone_id         = var.route53_zone_id
 }
 
-# 2. Tell Terraform to Wait for Validation
-# This resource will pause the 'apply' until AWS confirms the cert is valid.
-resource "aws_acm_certificate_validation" "this" {
-  provider = aws.us-east-1
-
-  # Reference the ARN from the module
-  certificate_arn = module.personal_website.acm_certificate_arn
-  
-  # Wait for the specific records we just created
+# 2. Tell Terraform to Wait for Validation. This resource will pause the 'apply' until AWS confirms the cert is valid.
+resource "aws_acm_certificate_validation" "personal_website" {
+  provider                = aws.us-east-1
+  certificate_arn         = aws_acm_certificate.personal_website.arn
   validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
 }

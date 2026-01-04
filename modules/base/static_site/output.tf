@@ -27,7 +27,7 @@ output "acm_certificate_arn" {
   description = "The ARN of the validated certificate"
   # We reference the validation resource to ensure Terraform 
   # doesn't output this until validation is actually complete.
-  value       = aws_acm_certificate_validation.this.certificate_arn
+  value = aws_acm_certificate_validation.this.certificate_arn
 }
 
 output "acm_validation_status" {
