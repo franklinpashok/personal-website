@@ -42,3 +42,36 @@ module "personal_website" {
   #policy = data.aws_iam_policy_document.s3_policy_thecarsexpo.json
 
 }
+
+# 1. Create the Validation Record in your Manual Zone
+# We iterate over the validation options output by the inner ACM module.
+resource "aws_route53_record" "validation" {
+  provider = aws.us-east-1
+  # We loop through the domain validation options provided by the module output
+  for_each = {
+    for validation in module.personal_website.acm_certificate_domain_validation_options : dvo.domain_name => {
+      name   = validation.resource_record_name
+      record = validation.resource_record_value
+      type   = validation.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = var.route53_zone_id
+}
+
+# 2. Tell Terraform to Wait for Validation
+# This resource will pause the 'apply' until AWS confirms the cert is valid.
+resource "aws_acm_certificate_validation" "this" {
+  provider = aws.us-east-1
+
+  # Reference the ARN from the module
+  certificate_arn = module.personal_website.acm_certificate_arn
+  
+  # Wait for the specific records we just created
+  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
+}

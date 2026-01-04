@@ -22,3 +22,16 @@ output "cloudfront_distribution_arn" {
   description = "The ARN (Amazon Resource Name) for the distribution."
   value       = module.personal_website.cloudfront_distribution_arn
 }
+
+output "acm_certificate_arn" {
+  description = "The ARN of the validated certificate"
+  # We reference the validation resource to ensure Terraform 
+  # doesn't output this until validation is actually complete.
+  value       = aws_acm_certificate_validation.this.certificate_arn
+}
+
+output "acm_validation_status" {
+  description = "Confirmation that validation resource was created"
+  value       = "Validation Complete"
+  depends_on  = [aws_acm_certificate_validation.this]
+}

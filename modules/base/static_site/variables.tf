@@ -33,3 +33,9 @@ variable "web_acl_id" {
 #   default     = ""
 #   description = "domain name for static site"
 # }
+
+variable "route53_zone_id" {
+  description = "Zone ID for the manual Route53 zone"
+  type        = string
+  default     = ""
+}
