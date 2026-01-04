@@ -49,7 +49,7 @@ resource "aws_route53_record" "validation" {
   provider = aws.us-east-1
   # We loop through the domain validation options provided by the module output
   for_each = {
-    for validation in module.personal_website.acm_certificate_domain_validation_options : dvo.domain_name => {
+    for validation in module.personal_website.acm_certificate_domain_validation_options : validation.domain_name => {
       name   = validation.resource_record_name
       record = validation.resource_record_value
       type   = validation.resource_record_type
