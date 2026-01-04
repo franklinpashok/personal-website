@@ -3,7 +3,7 @@ module "my_personal_website" {
 
   bucket_name        = "my-personal-website"
   bucket_domain_name = module.my_personal_website.s3_bucket_bucket_domain_name
-  acm_domain_name    = data.aws_route53_zone.id
+  acm_domain_name    = data.aws_route53_zone.personal_website.name
   aws_region         = data.aws_region.current.id
   #web_acl_id         = module.waf_cloudfront.arn
 
