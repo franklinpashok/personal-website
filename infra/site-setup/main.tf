@@ -1,0 +1,13 @@
+module "my_personal_website" {
+  source = "../../modules/base/static_site/"
+
+  bucket_name        = "my-personal-website"
+  bucket_domain_name = module.my_personal_website.s3_bucket_bucket_domain_name
+  acm_domain_name    = "franklinpulltikurthi.com"
+  aws_region         = data.aws_region.current.id
+  #web_acl_id         = module.waf_cloudfront.arn
+
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
+}

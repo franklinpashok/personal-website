@@ -1,16 +1,16 @@
 module "github_oidc_provider" {
-    source = "../../modules/base/iam_github_oidc"
+  source = "../../modules/base/iam_github_oidc"
 
-    aws_app_name = local.app_metadata.name
+  aws_app_name = local.app_metadata.name
 
-    github_repos = {
-        "mini-site" = {
-            github_repo         = "franklinpashok/personal-website"
-            github_branches     = ["main"]
-            github_environments = []
-            role_name           = null
-            role_path           = var.role_path
-            role_permissions_boundary = module.github_oidc_provider.gh_action_iam_role_permission_boundary.arn
-            }
+  github_repos = {
+    "mini-site" = {
+      github_repo               = "franklinpashok/personal-website"
+      github_branches           = ["main"]
+      github_environments       = []
+      role_name                 = null
+      role_path                 = var.role_path
+      role_permissions_boundary = module.github_oidc_provider.gh_action_iam_role_permission_boundary.arn
     }
+  }
 }
