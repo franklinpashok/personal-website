@@ -85,7 +85,7 @@ resource "aws_acm_certificate_validation" "personal_website" {
 # Create the Alias record in Route53
 resource "aws_route53_record" "website_alias" {
   provider = aws.us-east-1 # Use the provider that has access to Route53
-  
+
   zone_id = var.route53_zone_id
   name    = var.acm_domain_name
   type    = "A" # IPv4 Alias
