@@ -39,3 +39,9 @@ variable "route53_zone_id" {
   type        = string
   default     = ""
 }
+
+variable "create_associate_function" {
+  description = "If the CloudFront function should be associated with the default cache behavior."
+  type        = bool
+  default     = true
+}
