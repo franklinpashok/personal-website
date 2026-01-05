@@ -23,6 +23,8 @@ module "personal_website" {
     }
   }
 
+  create_associate_function = var.create_associate_function
+
   domains = {
     mypersonalwebsite = {
       domain              = var.acm_domain_name
