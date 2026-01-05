@@ -2,17 +2,23 @@ name: terraform-site
 
 on:
   pull_request:
-    branches: [ main ]   # plan on any PR targeting main
+    branches: [ main ]
+    paths:
+      - 'infra/**'
+      - 'modules/**'
   push:
-    branches: [ main ]   # plan+apply only on main
+    branches: [ main ]
+    paths:
+      - 'infra/**'
+      - 'modules/**'
 
 permissions:
   id-token: write
   contents: read
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION }}                 # set in Settings → Actions → Variables
-  TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }} # set in Settings → Actions → Secrets
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
 
 concurrency:
   group: tf-state

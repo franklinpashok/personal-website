@@ -1,0 +1,42 @@
+name: Deploy Website Content
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'personal_site/**' # Only run when website files change
+
+permissions:
+  id-token: write   # Required for OIDC
+  contents: read
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+
+jobs:
+  deploy-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Reuse the SAME OIDC Role
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_ROLE_ARN }}
+          role-session-name: gha-website-deploy
+
+      # Sync files to S3
+      - name: Sync to S3
+        run: |
+          # --delete removes files from S3 if they were deleted from your git repo
+          aws s3 sync ./personal_site s3://${{ secrets.AWS_S3_BUCKET }} --delete
+
+      # Invalidate Cache so users see changes immediately
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
