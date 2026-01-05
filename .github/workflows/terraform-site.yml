@@ -3,6 +3,9 @@ name: terraform-site
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - 'infra/**'
+      - 'modules/**'
   push:
     branches: [ main ]
     paths:
