@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'personal_site/**' # Only run when website files change
+      - 'my_personal_site/**' # Only run when website files change
 
 permissions:
   id-token: write   # Required for OIDC

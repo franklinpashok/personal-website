@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Franklin Pulltikurthi</title>
+    <link rel="icon" href="../assets/images/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="brand-logo">FP</a>
+            
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../profile/index.html" class="nav-link">Profile</a>
+            <a href="index.html" class="nav-link active">Projects</a>
+            <a href="../about/index.html" class="nav-link">About Me</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header class="page-header">
+            <div>
+                <h1 style="margin:0; color:#2c3e50;">Projects & Case Studies</h1>
+                <p style="margin: 5px 0 0 0; color:#666; font-size: 1.1rem;">
+                    A collection of my infrastructure automation work.
+                </p>
+            </div>
+        </header>
+
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 class="project-title">Personal Cloud Portfolio</h3>
+                    <span class="project-status status-live">Live & On-Going</span>
+                </div>
+                <div class="project-description">
+                    <p><strong>This Website:</strong> A modern, responsive personal portfolio built entirely on AWS serverless infrastructure.</p>
+                    
+                    <ul style="padding-left: 20px; margin-top: 10px; margin-bottom: 15px;">
+                        <li><strong>Infrastructure:</strong> Automated provisioning via Terraform (S3 & CloudFront) with custom modules.</li>
+                        <li><strong>Secure Authentication:</strong> Eliminated long-lived Access Keys (AK/SK) by implementing <strong>GitHub OIDC</strong> to assume AWS roles with short-lived credentials for Terraform runs.</li>
+                    </ul>
+
+                    <div style="background: #f8f9fa; padding: 10px 15px; border-radius: 6px; border-left: 3px solid #3498db; margin-bottom: 20px;">
+                        <strong style="font-size: 0.9rem; color: #2c3e50;">🛡️ Repository Security & Governance:</strong>
+                        <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 0.9rem; color: #555;">
+                            <li><strong>Branch Protection:</strong> "Main" branch locked. No direct pushes or force pushes allowed.</li>
+                            <li><strong>Quality Gates:</strong> PRs require approval and passing status checks (Terraform Plan) before merge.</li>
+                            <li><strong>Secret Safety:</strong> Strict <code>.gitignore</code> policy ensuring no state files (<code>*.tfstate</code>) or variable files (<code>*.tfvars</code>) are committed.</li>
+                        </ul>
+                    </div>
+
+                    <a href="https://github.com/franklinpashok/personal-website" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; color: #3498db; font-size: 0.95rem;">
+                        <span style="font-size: 1.2rem;">📂</span> View Source Code
+                    </a>
+                </div>
+                <div class="tech-stack">
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">GitHub Actions</span>
+                    <span class="tech-tag">AWS OIDC</span>
+                    <span class="tech-tag">S3/CloudFront</span>
+                </div>
+            </div>
+            <div class="project-card" style="border-left: 4px solid #ef6c00;"> <div class="project-header">
+                    <h3 class="project-title">Serverless Dynamic Backend</h3>
+                    <span class="project-status status-upcoming">Upcoming</span>
+                </div>
+                <div class="project-description">
+                    <p><strong>Roadmap:</strong> Enhancing the static portfolio with dynamic capabilities using a Serverless architecture.</p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Implementing <strong>API Gateway</strong> as the REST entry point.</li>
+                        <li>Developing <strong>AWS Lambda</strong> functions (Python) to process contact forms and dynamic content.</li>
+                        <li>Integration with DynamoDB for data persistence.</li>
+                    </ul>
+                </div>
+                <div class="tech-stack">
+                    <span class="tech-tag">API Gateway</span>
+                    <span class="tech-tag">Lambda (Python)</span>
+                    <span class="tech-tag">Serverless</span>
+                    <span class="tech-tag">DynamoDB</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 class="project-title">AWS Static Site Terraform Module</h3>
+                    <span class="project-status status-completed">Completed</span>
+                </div>
+                <div class="project-description">
+                    <p><strong>Infrastructure as Code:</strong> Built a reusable Terraform module to automate the deployment of secure, high-performance static websites.</p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Provisions <strong>ACM Certificates</strong> for SSL/TLS.</li>
+                        <li>Configures <strong>CloudFront Distribution</strong> with default cache behaviors and CloudFront Functions.</li>
+                        <li>Secures <strong>S3 Buckets</strong> with OAI/OAC policies.</li>
+                    </ul>
+                </div>
+                <div class="tech-stack">
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">AWS CloudFront</span>
+                    <span class="tech-tag">AWS ACM</span>
+                    <span class="tech-tag">S3</span>
+                    <span class="tech-tag">Route53</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
