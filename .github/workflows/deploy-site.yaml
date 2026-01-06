@@ -32,7 +32,7 @@ jobs:
       - name: Sync to S3
         run: |
           # --delete removes files from S3 if they were deleted from your git repo
-          aws s3 sync ./personal_site s3://${{ secrets.AWS_S3_BUCKET }} --delete
+          aws s3 sync ./my_personal_site s3://${{ secrets.AWS_S3_BUCKET }} --delete
 
       # Invalidate Cache so users see changes immediately
       - name: Invalidate CloudFront
