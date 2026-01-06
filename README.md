@@ -42,6 +42,10 @@ Unlike traditional setups that store long-lived **Access Keys (AK)** and **Secre
 
 This repository enforces strict governance rules to simulate a production-grade enterprise environment:
 
+* **Zero Trust Storage:** * The S3 bucket has **Block Public Access** enabled (all 4 settings set to `true`). 
+    * Access is granted *only* to the CloudFront Service Principal via a strict Bucket Policy.
+* **Network Security:** * **WAF Enabled:** Traffic is inspected by AWS WAF before reaching the cache.
+    * **HTTPS Only:** CloudFront enforces HTTP-to-HTTPS redirection.
 * **Branch Protection:**
     * The `main` branch is **locked**. Direct pushes are blocked.
     * Pull Requests (PRs) require at least **1 peer review** approval.
@@ -49,6 +53,7 @@ This repository enforces strict governance rules to simulate a production-grade 
 * **Secret Management:**
     * State files (`.tfstate`) are stored in a remote backend (S3 + DynamoDB locking), never in Git.
     * Sensitive variable files (`.tfvars`) are strictly ignored via `.gitignore`.
+    * GitHub Actions use **OIDC** for short-lived AWS credentials (no hardcoded keys).
 
 ## 🛠️ Local Development
 
