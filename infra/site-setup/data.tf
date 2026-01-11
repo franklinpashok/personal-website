@@ -1,5 +1,5 @@
 data "aws_route53_zone" "personal_website" {
-  name         = "franklinpulltikurthi.com"
+  name         = var.acm_domain_name
   private_zone = false
 }
 

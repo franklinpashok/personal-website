@@ -12,6 +12,8 @@ module "personal_website" {
     }
   }
 
+
+
   origin = {
     origin_access_control = {
       domain_name           = var.bucket_domain_name
@@ -24,6 +26,7 @@ module "personal_website" {
   }
 
   create_associate_function = var.create_associate_function
+  additional_aliases = var.additional_domains
 
   domains = {
     mypersonalwebsite = {
@@ -46,56 +49,4 @@ module "personal_website" {
   #Addition s3 policy if required to add to the existing policy deployed by module
   #policy = data.aws_iam_policy_document.s3_policy_thecarsexpo.json
 
-}
-
-# 1. Create Cert
-resource "aws_acm_certificate" "personal_website" {
-  provider          = aws.us-east-1
-  domain_name       = var.acm_domain_name
-  validation_method = "DNS"
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-# 1. Create the Validation Record in your Manual Zone We iterate over the validation options output by the inner ACM module.
-resource "aws_route53_record" "validation" {
-  provider = aws.us-east-1
-  for_each = {
-    for dvo in aws_acm_certificate.personal_website.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
-
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = var.route53_zone_id
-}
-
-# 2. Tell Terraform to Wait for Validation. This resource will pause the 'apply' until AWS confirms the cert is valid.
-resource "aws_acm_certificate_validation" "personal_website" {
-  provider                = aws.us-east-1
-  certificate_arn         = aws_acm_certificate.personal_website.arn
-  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
-}
-
-# Create the Alias record in Route53
-resource "aws_route53_record" "website_alias" {
-  provider = aws.us-east-1 # Use the provider that has access to Route53
-
-  zone_id = var.route53_zone_id
-  name    = var.acm_domain_name
-  type    = "A" # IPv4 Alias
-
-  alias {
-    # Reference the outputs from the module
-    name                   = module.personal_website.cloudfront_distribution_domain_name
-    zone_id                = module.personal_website.cloudfront_distribution_hosted_zone_id
-    evaluate_target_health = false
-  }
 }
