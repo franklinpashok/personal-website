@@ -14,3 +14,15 @@ variable "test" {
   type        = string
   default     = ""
 }
+
+variable "acm_domain_name" {
+  type        = string
+  default     = ""
+  description = "doamin name"
+}
+
+variable "additional_domains" {
+  type        = list
+  default     = []
+  description = "additional aliases"
+}
