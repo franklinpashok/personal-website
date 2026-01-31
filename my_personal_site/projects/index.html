@@ -26,12 +26,13 @@
             <div>
                 <h1 style="margin:0; color:#2c3e50;">Projects & Case Studies</h1>
                 <p style="margin: 5px 0 0 0; color:#666; font-size: 1.1rem;">
-                    A collection of my infrastructure automation work.
+                    A collection of my infrastructure automation and AI engineering work.
                 </p>
             </div>
         </header>
 
         <div class="project-grid">
+            
             <div class="project-card">
                 <div class="project-header">
                     <h3 class="project-title">Personal Cloud Portfolio</h3>
@@ -65,7 +66,41 @@
                     <span class="tech-tag">S3/CloudFront</span>
                 </div>
             </div>
-            <div class="project-card" style="border-left: 4px solid #ef6c00;"> <div class="project-header">
+
+            <div class="project-card" style="border-left: 4px solid #00c853;">
+                <div class="project-header">
+                    <h3 class="project-title">
+                        Local Secure Doc Analyst <span style="font-size: 1.1rem;">🔒</span>
+                    </h3>
+                    <span class="project-status status-completed" style="background-color: #e8f5e9; color: #2e7d32;">Completed</span>
+                </div>
+                
+                <div class="project-description">
+                    <p><strong>Private RAG Tool:</strong> A 100% offline tool that allows secure chat with sensitive PDF/Excel documents using local LLMs, ensuring zero data leakage to the cloud.</p>
+                    
+                    <ul style="padding-left: 20px; margin-top: 10px; margin-bottom: 15px;">
+                        <li><strong>Tech Stack:</strong> Built with Python, Streamlit, LangChain, and Ollama.</li>
+                        <li><strong>Benchmarks:</strong> Tested against Llama 3 (8B) and Mistral-Nemo (12B). Mistral-Nemo proved 40% more accurate in extracting entities from Spanish legal docs.</li>
+                        <li><strong>Privacy:</strong> Uses ephemeral in-memory vector storage (ChromaDB) to ensure data is wiped instantly after analysis.</li>
+                    </ul>
+
+                    <a href="https://github.com/franklinpashok/personal-website/tree/main/projects/local_docs_ai" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; color: #3498db; font-size: 0.95rem;">
+                        <span style="font-size: 1.2rem;">📂</span> View Source Code
+                    </a>
+                </div>
+
+                <div class="tech-stack">
+                    <span class="tech-tag" style="background-color: #e3f2fd; color: #007bff; border-color: #b3d7ff;">GenAI</span>
+                    <span class="tech-tag" style="background-color: #e3f2fd; color: #007bff; border-color: #b3d7ff;">Ollama</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">LangChain</span>
+                    <span class="tech-tag">ChromaDB</span>
+                </div>
+            </div>
+
+            <div class="project-card" style="border-left: 4px solid #ef6c00;"> 
+                <div class="project-header">
                     <h3 class="project-title">Serverless Dynamic Backend</h3>
                     <span class="project-status status-upcoming">Upcoming</span>
                 </div>
@@ -84,6 +119,7 @@
                     <span class="tech-tag">DynamoDB</span>
                 </div>
             </div>
+
             <div class="project-card">
                 <div class="project-header">
                     <h3 class="project-title">AWS Static Site Terraform Module</h3>
@@ -105,33 +141,8 @@
                     <span class="tech-tag">Route53</span>
                 </div>
             </div>
-            <div class="project-card">
-                <div class="project-title">
-                    Local Secure Doc Analyst
-                    <span class="project-icon">🔒</span>
-                </div>
-                
-                <p class="project-description">
-                    A private, 100% offline RAG (Retrieval-Augmented Generation) tool. 
-                    It allows secure chat with sensitive PDF/Excel documents using local LLMs, 
-                    ensuring zero data leakage to the cloud.
-                </p>
 
-                <div class="tech-stack">
-                    <span class="tech-tag highlight">GenAI</span>
-                    <span class="tech-tag highlight">Ollama</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Streamlit</span>
-                    <span class="tech-tag">LangChain</span>
-                    <span class="tech-tag">ChromaDB</span>
-                </div>
-
-                <a href="https://github.com/franklinpashok/local_doc_ai" class="project-link" target="_blank">
-                    View Source Code →
-                </a>
-            </div>
         </div>
     </div>
-
 </body>
 </html>
