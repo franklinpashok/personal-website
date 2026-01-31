@@ -8,23 +8,37 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     
     <style>
-        .project-grid {
-            display: grid;
-            /* This creates columns automatically. 
-               minmax(350px, 1fr) means: "Make columns at least 350px wide. 
-               If there is room, put them side-by-side." */
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-            gap: 2rem; /* Space between cards */
-            margin-top: 2rem;
-            align-items: start; /* Prevents cards from stretching weirdly */
-        }
+            /* 1. Force the main container to be wider */
+            /* This overrides the default "text-focused" narrow layout */
+            .container {
+                max-width: 1200px !important; 
+                width: 90%; /* Use 90% of screen on smaller devices */
+                margin: 0 auto; /* Center it */
+            }
 
-        /* Small fix to make sure cards don't look too wide on giant screens */
-        .project-card {
-            width: 100%; 
-            box-sizing: border-box; /* Ensures padding doesn't break layout */
-        }
-    </style>
+            /* 2. The Grid Logic */
+            .project-grid {
+                display: grid;
+                /* Changed 350px -> 300px. 
+                Now it only needs ~640px of space to trigger side-by-side layout. */
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+
+            /* Ensure cards stretch to fill their new space */
+            .project-card {
+                width: 100%;
+                display: flex;
+                flex-direction: column; /* Keeps footer at bottom */
+                height: 100%; /* Makes all cards same height */
+            }
+            
+            /* Push the link/tech-stack to the bottom if description is short */
+            .project-description {
+                flex-grow: 1; 
+            }
+        </style>
 </head>
 <body>
 
