@@ -39,3 +39,18 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Python junk
+__pycache__/
+*.pyc
+
+# Virtual Environment (if you use one)
+venv/
+.env
+
+# Large Files & Local Data (CRUCIAL)
+*.pdf
+*.docx
+*.xlsx
+*.db
+chroma_db/
