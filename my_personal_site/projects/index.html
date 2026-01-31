@@ -6,6 +6,25 @@
     <title>Projects | Franklin Pulltikurthi</title>
     <link rel="icon" href="../assets/images/favicon.ico" sizes="any">
     <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        .project-grid {
+            display: grid;
+            /* This creates columns automatically. 
+               minmax(350px, 1fr) means: "Make columns at least 350px wide. 
+               If there is room, put them side-by-side." */
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 2rem; /* Space between cards */
+            margin-top: 2rem;
+            align-items: start; /* Prevents cards from stretching weirdly */
+        }
+
+        /* Small fix to make sure cards don't look too wide on giant screens */
+        .project-card {
+            width: 100%; 
+            box-sizing: border-box; /* Ensures padding doesn't break layout */
+        }
+    </style>
 </head>
 <body>
 
@@ -80,7 +99,7 @@
                     
                     <ul style="padding-left: 20px; margin-top: 10px; margin-bottom: 15px;">
                         <li><strong>Tech Stack:</strong> Built with Python, Streamlit, LangChain, and Ollama.</li>
-                        <li><strong>Benchmarks:</strong> Tested against Llama 3 (8B) and Mistral-Nemo (12B). Mistral-Nemo proved 40% more accurate in extracting entities from Spanish legal docs.</li>
+                        <li><strong>Benchmarks:</strong> Tested against Llama 3 (8B) and Mistral-Nemo (12B). Mistral-Nemo proved more accurate in extracting entities from Spanish legal docs, did not test on gemma or pi3 due to the resource contraint on my personal laptop but these two should be more efficient compared to ollama or Mistral-Nemo</li>
                         <li><strong>Privacy:</strong> Uses ephemeral in-memory vector storage (ChromaDB) to ensure data is wiped instantly after analysis.</li>
                     </ul>
 
