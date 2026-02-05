@@ -15,11 +15,13 @@ from langchain_core.documents import Document
 # --- CONFIGURATION ---
 #MODEL_NAME = "llama3"
 MODEL_NAME = "mistral-nemo"
+#MODEL_NAME = "gemma2:27b"
 EMBEDDING_MODEL = "nomic-embed-text"
 
 st.set_page_config(page_title="Private Doc Analyst", page_icon="🕵️‍♂️", layout="wide")
 
 st.title("🔒 Private Local Document Analyst")
+st.markdown(f"**Model in use:** `{MODEL_NAME}`")
 
 # --- SESSION STATE INITIALIZATION (Memory) ---
 if "messages" not in st.session_state:

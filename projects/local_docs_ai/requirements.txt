@@ -10,3 +10,4 @@ openpyxl
 pandas
 unstructured
 networkx
+python-docx

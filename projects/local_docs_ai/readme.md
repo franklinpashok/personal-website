@@ -31,23 +31,7 @@ Built with **Python**, **Streamlit**, **LangChain**, and **Ollama**, this tool r
 
 ---
 
-## 📊 Real-World Benchmark (Test Case)
-
-We tested multiple models on a **Spanish Social Security Document (Resolution of Affiliation)** to extract the "Addressee Name." The document contained complex layouts with multiple names (signers, authorities, and the user).
-
-**Hardware:** Lenovo P53 (32GB RAM, Nvidia T1000 4GB VRAM)
-
-| Model | Result | Analysis |
-| :--- | :--- | :--- |
-| **Llama 3 (8B)** | ❌ **FAILED** | **Hallucination.** It incorrectly identified the government authority signing the document ("CIGARRAN MAGAN...") as the addressee. |
-| **Mistral-Nemo (12B)** | ✅ **PASSED** | **Accurate.** Correctly ignored the signer and identified the true addressee. |
-| **Gemma 2 (27B)** | ✅ **PASSED** | **High Precision.** Slower inference, but provided detailed reasoning for *why* that person was the addressee. |
-
-**Conclusion:** For this specific hardware setup, **Mistral-Nemo (12B)** offers the best balance of accuracy vs. speed.
-
----
-
-## 🛠️ Tech Stack
+## �️ Tech Stack
 
 * **LLM Runtime:** [Ollama](https://ollama.com/)
   (Llama 3, Mistral, Gemma, Phi, DeepSeek, etc.)
@@ -127,6 +111,65 @@ The app will automatically open in your browser:
 
 ---
 
+## 🧪 Test Files Generator
+
+### Purpose
+
+The `generate_test_files.py` script creates sample documents for testing and development purposes. This allows you to quickly generate realistic test data without needing to provide your own documents.
+
+### Generated Test Files
+
+The script generates two test documents:
+
+1. **cloud_budget_2026.xlsx** - An Excel spreadsheet containing a cloud service budget with the following columns:
+   - Service (AWS EKS Cluster, RDS, NAT Gateway, CloudFront, Lambda)
+   - Region (deployment regions)
+   - Monthly Cost (in USD)
+   - Status (Active/Deprecated)
+   - Owner (responsible team)
+
+2. **incident_report_feb_2026.docx** - A Word document containing a security incident report with:
+   - Executive summary
+   - Impact analysis
+   - Required actions for remediation
+
+These documents can be uploaded to the RAG application for testing document parsing and Q&A capabilities.
+
+---
+
+### 📦 Installation (Additional Dependencies)
+
+To run the test files generator, install the required packages:
+
+```bash
+pip install openpyxl python-docx
+```
+
+**Package Details:**
+- **openpyxl** - Required to generate Excel files (.xlsx)
+- **python-docx** - Required to generate Word documents (.docx)
+
+Add these to your virtual environment as shown in the [Installation section](#-installation-python).
+
+---
+
+### 🚀 Running the Test Generator
+
+With your virtual environment activated:
+
+```bash
+python generate_test_files.py
+```
+
+**Output:**
+- Generates `cloud_budget_2026.xlsx` in the project root
+- Generates `incident_report_feb_2026.docx` in the project root
+- Console output confirms file creation: `✅ Excel file created.` and `✅ Word document created.`
+
+You can then upload these generated files directly into the application UI to test RAG functionality with different document types.
+
+---
+
 ## 🧠 Model Selection & Hardware Guide
 
 This project is **model-agnostic**. You can switch models in `app.py` using the `MODEL_NAME` variable based on your hardware.
@@ -168,7 +211,23 @@ For machines with **48 GB+ RAM**, **Apple Mac Studio**, or **24 GB+ GPU VRAM (RT
 | **Gemma 2 (27B)** | 16 GB | Slow | Very High | Deep analysis, logic, writing |
 | **Command R (35B)** | 20 GB | Slow | Specialist | Strict document Q&A (RAG) |
 
---- 
+---
+
+## 📊 Real-World Benchmark (Test Case)
+
+We tested multiple models on a **Spanish Social Security Document (Resolution of Affiliation)** to extract the "Addressee Name." The document contained complex layouts with multiple names (signers, authorities, and the user).
+
+**Hardware:** Lenovo P53 (32GB RAM, Nvidia T1000 4GB VRAM)
+
+| Model | Result | Analysis |
+| :--- | :--- | :--- |
+| **Llama 3 (8B)** | ❌ **FAILED** | **Hallucination.** It incorrectly identified the government authority signing the document ("CIGARRAN MAGAN...") as the addressee. |
+| **Mistral-Nemo (12B)** | ✅ **PASSED** | **Accurate.** Correctly ignored the signer and identified the true addressee. |
+| **Gemma 2 (27B)** | ✅ **PASSED** | **High Precision.** Slower inference, but provided detailed reasoning for *why* that person was the addressee. |
+
+**Conclusion:** For this specific hardware setup, **Mistral-Nemo (12B)** offers the best balance of accuracy vs. speed.
+
+---
 
 ## 🔐 Privacy & Security
 
