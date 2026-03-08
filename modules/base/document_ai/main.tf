@@ -53,6 +53,11 @@ resource "aws_iam_role_policy" "lambda_ai_policy" {
         Resource = "${aws_s3_bucket.document_dropzone.arn}/*"
       },
       {
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = aws_s3_bucket.document_dropzone.arn
+      },
+      {
         Effect = "Allow"
         Action = ["dynamodb:PutItem"]
         Resource = aws_dynamodb_table.ai_results.arn
