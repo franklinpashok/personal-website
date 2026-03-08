@@ -48,6 +48,28 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
 
     resources = ["*"]
   }
+
+# =========================================================
+  # NEW: Securely scoped PassRole for the AI Worker
+  # =========================================================
+  statement {
+    sid = "AllowPassingSpecificAIWorkerRole"
+    actions = [
+      "iam:PassRole"
+    ]
+    
+    # SECURITY: Can only pass this exact role. No Admin roles allowed.
+    resources = [
+      "arn:aws:iam::*:role/serverless_ai_lambda_worker_role"
+    ]
+    
+    # SECURITY: Can only hand the badge to the Lambda service.
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["lambda.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "gha_permissions_boundary" {
