@@ -17,12 +17,12 @@ module "my_personal_website" {
 # =====================================================
 # SERVERLESS AI DOCUMENT PROCESSOR MODULE
 # =====================================================
-# module "document_ai_backend" {
-#   source = "../../modules/base/document_ai"
+module "document_ai_backend" {
+  source = "../../modules/base/document_ai"
   
-#   # MUST BE GLOBALLY UNIQUE! 
-#   # Change "fp" to your initials or add random numbers so S3 doesn't complain
-#   bucket_name = "fp-serverless-ai-docs-2026-v1" 
+  # MUST BE GLOBALLY UNIQUE! 
+  # Change "fp" to your initials or add random numbers so S3 doesn't complain
+  bucket_name = "fp-serverless-ai-docs-2026-v1" 
   
-#   table_name  = "DocumentAnalysisResults"
-# }
+  table_name  = "DocumentAnalysisResults"
+}
