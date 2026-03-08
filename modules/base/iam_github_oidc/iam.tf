@@ -40,6 +40,7 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
       "iam:GetPolicy",
       "iam:GetPolicyVersion",
       "iam:ListPolicies",
+      "iam:ListPolicyVersions",
       "iam:ListOpenIDConnectProviders",
       "iam:GetOpenIDConnectProvider",
       "iam:GetRolePolicy"
