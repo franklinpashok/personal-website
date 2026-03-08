@@ -1,6 +1,8 @@
 import json
+from urllib import response
 import boto3
 import os
+import urllib.parse
 
 # Initialize AWS clients
 s3_client = boto3.client('s3')
@@ -12,9 +14,9 @@ def lambda_handler(event, context):
     try:
         # 1. Get the uploaded file info from the S3 event trigger
         bucket_name = event['Records'][0]['s3']['bucket']['name']
-        file_key = event['Records'][0]['s3']['object']['key']
-        print(f"Processing new file: {file_key} from bucket: {bucket_name}")
-        
+        raw_key = event['Records'][0]['s3']['object']['key']
+        file_key = urllib.parse.unquote_plus(raw_key)
+        print(f"Processing file: {file_key} (Decoded from: {raw_key})")
         # 2. Download the file from S3 into memory
         response = s3_client.get_object(Bucket=bucket_name, Key=file_key)
         file_bytes = response['Body'].read()
