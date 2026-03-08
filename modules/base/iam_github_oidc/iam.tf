@@ -13,7 +13,10 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
       "events:*",
       "acm:*",
       "cloudwatch:*",
-      "ecr:*"
+      "ecr:*", 
+      "dynamodb:*", # Required for the AI Memory Table
+      "bedrock:*" # Required so Terraform can verify Bedrock access
+
     ]
 
     resources = ["*"]
@@ -44,6 +47,28 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
 
     resources = ["*"]
   }
+
+statement {
+    sid = "IAMRoleCreationForAIProject"
+
+    actions = [
+      "iam:CreateRole",
+      "iam:DeleteRole",
+      "iam:UpdateRole",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:TagRole",
+      "iam:UntagRole",
+      "iam:PutRolePolicy",
+      "iam:DeleteRolePolicy",
+      "iam:PassRole" 
+    ]
+
+    # SECURITY: GitHub can ONLY create/modify roles that start with "serverless_ai_"
+    resources = [
+      "arn:aws:iam::*:role/serverless_ai_*"
+    ]
+  }
+
 }
 
 resource "aws_iam_policy" "gha_permissions_boundary" {
