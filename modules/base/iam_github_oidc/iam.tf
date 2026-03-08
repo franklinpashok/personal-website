@@ -15,7 +15,10 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
       "cloudwatch:*",
       "ecr:*", 
       "dynamodb:*", # Required for the AI Memory Table
-      "bedrock:*" # Required so Terraform can verify Bedrock access
+      "bedrock:*", # Required so Terraform can verify Bedrock access
+      "iam:Get*",
+      "iam:List*",
+      "iam:PassRole"
 
     ]
 
@@ -63,18 +66,13 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
       "arn:aws:iam::*:role/serverless_ai_lambda_worker_role"
     ]
     
-    # SECURITY: Can only hand the badge to the Lambda service.
+    # SECURITY: Can only allow to Lambda service.
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
       values   = ["lambda.amazonaws.com"]
     }
   }
-}
-
-resource "aws_iam_policy" "gha_permissions_boundary" {
-  name   = "gha-permissions-boundary"
-  policy = data.aws_iam_policy_document.mini-site_policy_statement.json
 }
 
 resource "aws_iam_role_policy" "mini_site_policy" {
