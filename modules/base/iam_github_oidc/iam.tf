@@ -49,26 +49,26 @@ data "aws_iam_policy_document" "mini-site_policy_statement" {
     resources = ["*"]
   }
 
-statement {
-    sid = "IAMRoleCreationForAIProject"
+# statement {
+#     sid = "IAMRoleCreationForAIProject"
 
-    actions = [
-      "iam:CreateRole",
-      "iam:DeleteRole",
-      "iam:UpdateRole",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:TagRole",
-      "iam:UntagRole",
-      "iam:PutRolePolicy",
-      "iam:DeleteRolePolicy",
-      "iam:PassRole" 
-    ]
+#     actions = [
+#       "iam:CreateRole",
+#       "iam:DeleteRole",
+#       "iam:UpdateRole",
+#       "iam:UpdateAssumeRolePolicy",
+#       "iam:TagRole",
+#       "iam:UntagRole",
+#       "iam:PutRolePolicy",
+#       "iam:DeleteRolePolicy",
+#       "iam:PassRole" 
+#     ]
 
-    # SECURITY: GitHub can ONLY create/modify roles that start with "serverless_ai_"
-    resources = [
-      "arn:aws:iam::*:role/serverless_ai_*"
-    ]
-  }
+#     # SECURITY: GitHub can ONLY create/modify roles that start with "serverless_ai_"
+#     resources = [
+#       "arn:aws:iam::*:role/serverless_ai_*"
+#     ]
+#   }
 
 }
 
