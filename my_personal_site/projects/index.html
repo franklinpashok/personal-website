@@ -9,32 +9,27 @@
     
     <style>
             /* 1. Force the main container to be wider */
-            /* This overrides the default "text-focused" narrow layout */
             .container {
                 max-width: 1200px !important; 
-                width: 90%; /* Use 90% of screen on smaller devices */
-                margin: 0 auto; /* Center it */
+                width: 90%; 
+                margin: 0 auto; 
             }
 
             /* 2. The Grid Logic */
             .project-grid {
                 display: grid;
-                /* Changed 350px -> 300px. 
-                Now it only needs ~640px of space to trigger side-by-side layout. */
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
                 gap: 2rem;
                 margin-top: 2rem;
             }
 
-            /* Ensure cards stretch to fill their new space */
             .project-card {
                 width: 100%;
                 display: flex;
-                flex-direction: column; /* Keeps footer at bottom */
-                height: 100%; /* Makes all cards same height */
+                flex-direction: column; 
+                height: 100%; 
             }
             
-            /* Push the link/tech-stack to the bottom if description is short */
             .project-description {
                 flex-grow: 1; 
             }
@@ -45,7 +40,6 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="../" class="brand-logo">FP</a>
-            
             <a href="../" class="nav-link">Home</a>
             <a href="../profile/" class="nav-link">Profile</a>
             <a href="./" class="nav-link active">Projects</a>
@@ -100,6 +94,44 @@
                 </div>
             </div>
 
+            <div class="project-card" style="border-left: 4px solid #6200ea;"> 
+                <div class="project-header">
+                    <h3 class="project-title">Cloud-Native AI Doc Analyzer</h3>
+                    <span class="project-status status-live">Live</span>
+                </div>
+                
+                <div class="project-description">
+                    <p><strong>Event-Driven AI:</strong> An automated pipeline using <strong>Amazon Bedrock (Claude 3 Haiku)</strong> to summarize and extract insights from PDF documents uploaded to S3.</p>
+                    
+                    <ul style="padding-left: 20px; margin-top: 10px; margin-bottom: 15px;">
+                        <li><strong>AI Orchestration:</strong> Lambda-based workflow using <code>urllib.parse</code> to handle URL-encoded S3 events.</li>
+                        <li><strong>Data Persistence:</strong> Extracts structured JSON from unstructured text and stores results in <strong>DynamoDB</strong>.</li>
+                    </ul>
+
+                    <div style="background: #fdfaff; padding: 10px 15px; border-radius: 6px; border-left: 3px solid #6200ea; margin-bottom: 20px;">
+                        <strong style="font-size: 0.9rem; color: #2c3e50;">🛡️ Advanced Governance & Guardrails:</strong>
+                        <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 0.9rem; color: #555;">
+                            <li><strong>Permissions Boundaries:</strong> Implemented a "Maximum Permission Ceiling" to prevent privilege escalation within CI/CD.</li>
+                            <li><strong>Forced Inheritance:</strong> Automation role is restricted from creating any IAM roles that do not inherit existing security boundaries.</li>
+                            <li><strong>Anti-Tampering:</strong> Explicit Deny policies prevent the GitHub OIDC role from modifying its own security constraints.</li>
+                        </ul>
+                    </div>
+
+                    <a href="./ai-document-analyzer/README.md" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; color: #3498db; font-size: 0.95rem;">
+                        <span style="font-size: 1.2rem;">📄</span> View Project Documentation
+                    </a>
+                </div>
+
+                <div class="tech-stack">
+                    <span class="tech-tag" style="background-color: #f3e5f5; color: #7b1fa2; border-color: #d1c4e9;">Amazon Bedrock</span>
+                    <span class="tech-tag" style="background-color: #f3e5f5; color: #7b1fa2; border-color: #d1c4e9;">AWS Lambda</span>
+                    <span class="tech-tag">DynamoDB</span>
+                    <span class="tech-tag">S3</span>
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">Python</span>
+                </div>
+            </div>
+
             <div class="project-card" style="border-left: 4px solid #00c853;">
                 <div class="project-header">
                     <h3 class="project-title">
@@ -113,7 +145,7 @@
                     
                     <ul style="padding-left: 20px; margin-top: 10px; margin-bottom: 15px;">
                         <li><strong>Tech Stack:</strong> Built with Python, Streamlit, LangChain, and Ollama.</li>
-                        <li><strong>Benchmarks:</strong> Tested against Llama 3 (8B) and Mistral-Nemo (12B). Mistral-Nemo proved more accurate in extracting entities from Spanish legal docs, did not test on gemma or pi3 due to the resource contraint on my personal laptop but these two should be more efficient compared to ollama or Mistral-Nemo</li>
+                        <li><strong>Benchmarks:</strong> Tested against Llama 3 (8B) and Mistral-Nemo (12B). Mistral-Nemo proved more accurate in extracting entities from Spanish legal docs.</li>
                         <li><strong>Privacy:</strong> Uses ephemeral in-memory vector storage (ChromaDB) to ensure data is wiped instantly after analysis.</li>
                     </ul>
 
@@ -162,7 +194,7 @@
                     <p><strong>Infrastructure as Code:</strong> Built a reusable Terraform module to automate the deployment of secure, high-performance static websites.</p>
                     <ul style="padding-left: 20px; margin-top: 10px;">
                         <li>Provisions <strong>ACM Certificates</strong> for SSL/TLS.</li>
-                        <li>Configures <strong>CloudFront Distribution</strong> with default cache behaviors and CloudFront Functions.</li>
+                        <li>Configures <strong>CloudFront Distribution</strong> with default cache behaviors.</li>
                         <li>Secures <strong>S3 Buckets</strong> with OAI/OAC policies.</li>
                     </ul>
                 </div>
